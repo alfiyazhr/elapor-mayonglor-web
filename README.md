@@ -21,10 +21,11 @@ Pusat kendali (Centralized Dashboard) untuk ekosistem E-Lapor Mayong Lor. Dashbo
 - **Filter Data:** Pencarian dan pengelompokan laporan berdasarkan kategori atau rentang waktu tertentu.
 
 ## Tech Stack
-- **Frontend:** HTML5, CSS3, JavaScript (ES6+), Bootstrap 5.
-- **Backend Logic:** JavaScript / Native PHP (REST API Integration).
-- **Database:** Firebase Firestore (Real-time Database).
-- **Security:** Firebase Authentication & Secure Config Management.
+- **Frontend:** HTML5, CSS3, Native JavaScript (ES6+)
+- **UI Framework:** Bootstrap 5
+- **Backend Service:** Firebase Firestore (Real-time Database)
+- **Authentication:** Firebase Auth
+- **Architecture:** Serverless Client-side Integration
 
 ## Security & Configuration
 Untuk alasan keamanan, file konfigurasi Firebase (`firebase.js`) tidak disertakan dalam repositori publik ini guna mencegah penyalahgunaan API Key. Pengaturan ini dikelola melalui file lokal yang telah dikecualikan oleh `.gitignore`.
