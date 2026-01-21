@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manajemen User - Mayong Lor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/config/theme.js"></script>
+
+    <style>
+      div:where(.swal2-container) {
+        font-family: "Poppins", sans-serif !important;
+      }
+      /* Custom scrollbar biar lebih rapi */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 font-sans antialiased text-secondary">
+    <nav
+      class="bg-white border-b border-gray-200 fixed w-full z-30 top-0 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+          <div class="flex items-center">
+            <a href="index.html" class="flex items-center gap-3">
+              <img
+                src="./assets/img/logonav.png"
+                alt="Logo E-Lapor"
+                class="h-10 w-auto object-contain"
+              />
+              <span class="text-xl font-bold text-primary tracking-wide"
+                >E-Lapor Admin</span
+              >
+            </a>
+          </div>
+
+          <div class="hidden md:flex items-center space-x-8">
+            <a
+              href="index.html"
+              class="text-gray-500 hover:text-primary font-medium px-1 py-2 text-sm transition flex items-center gap-2"
+            >
+              <i class="fas fa-th-large"></i>Dashboard
+            </a>
+            <a
+              href="users.html"
+              class="text-primary font-bold border-b-2 border-primary px-1 py-2 text-sm flex items-center gap-2"
+            >
+              <i class="fas fa-users"></i>Kelola User
+            </a>
+            <a
+              href="reports.html"
+              class="text-gray-500 hover:text-primary font-medium px-1 py-2 text-sm transition flex items-center gap-2"
+            >
+              <i class="fas fa-clipboard-list"></i>Laporan
+            </a>
+            <div class="h-6 w-px bg-gray-300 mx-2"></div>
+            <button
+              id="btnLogout"
+              class="flex items-center gap-2 text-red-500 hover:text-red-700 font-medium text-sm transition"
+            >
+              <i class="fas fa-sign-out-alt"></i> Keluar
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-28 mb-10">
+      <div
+        class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4"
+      >
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Manajemen Pengguna</h1>
+          <p class="text-gray-500 text-sm mt-1">
+            Kelola data warga dan akun administrator desa.
+          </p>
+        </div>
+
+        <div class="relative w-full md:w-80">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
+            <i class="fas fa-search text-gray-400"></i>
+          </div>
+          <input
+            type="text"
+            id="searchUser"
+            class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-primary focus:border-primary"
+            placeholder="Cari NIK, Nama, atau Email..."
+          />
+        </div>
+      </div>
+
+      <div class="border-b border-gray-200 mb-6">
+        <ul
+          class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500"
+          id="userTabs"
+        >
+          <li class="me-2">
+            <button
+              class="inline-block p-4 text-primary border-b-2 border-primary rounded-t-lg active group"
+              data-filter="all"
+            >
+              <i class="fas fa-users mr-2"></i>Semua User
+            </button>
+          </li>
+          <li class="me-2">
+            <button
+              class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group"
+              data-filter="admin"
+            >
+              <i class="fas fa-user-shield mr-2 text-blue-600"></i>Administrator
+            </button>
+          </li>
+          <li class="me-2">
+            <button
+              class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group"
+              data-filter="warga"
+            >
+              <i class="fas fa-user mr-2 text-gray-500"></i>Warga
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div
+        class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+              <tr>
+                <th scope="col" class="px-6 py-4 w-10 text-center">No</th>
+                <th scope="col" class="px-6 py-4">Profil Pengguna</th>
+                <th scope="col" class="px-6 py-4">Role</th>
+                <th scope="col" class="px-6 py-4">Tanggal Bergabung</th>
+                <th scope="col" class="px-6 py-4 text-center w-32">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-user">
+              <tr class="bg-white border-b">
+                <td colspan="5" class="px-6 py-12 text-center text-gray-400">
+                  <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                  <p>Mengambil data user...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <div
+      id="modalDetailUser"
+      tabindex="-1"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex justify-center items-center bg-black/50"
+    >
+      <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-2xl shadow-2xl">
+          <div class="flex items-start justify-between p-5 border-b rounded-t">
+            <h3 class="text-xl font-bold text-gray-900">Detail Profil Warga</h3>
+            <button
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
+              data-modal-hide="modalDetailUser"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="p-6 space-y-4">
+            <div class="text-center">
+              <div
+                id="detailAvatar"
+                class="w-20 h-20 bg-blue-50 text-primary rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-3 border-2 border-blue-100 uppercase"
+              ></div>
+              <h4 id="detailNama" class="text-lg font-bold text-gray-800"></h4>
+              <span
+                id="detailBadge"
+                class="px-3 py-1 text-[10px] font-bold rounded-full uppercase"
+              ></span>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 pt-6 border-t border-gray-100">
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-primary border border-slate-100"
+                >
+                  <i class="fas fa-id-card"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-[10px] uppercase text-gray-400 font-bold tracking-wider"
+                  >
+                    Nomor Induk Kependudukan
+                  </p>
+                  <p id="detailNik" class="text-sm font-bold text-gray-700"></p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-primary border border-slate-100"
+                >
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-[10px] uppercase text-gray-400 font-bold tracking-wider"
+                  >
+                    Alamat Email
+                  </p>
+                  <p
+                    id="detailEmail"
+                    class="text-sm font-medium text-gray-700"
+                  ></p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center text-primary border border-slate-100 mt-1"
+                >
+                  <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div>
+                  <p
+                    class="text-[10px] uppercase text-gray-400 font-bold tracking-wider"
+                  >
+                    Alamat Lengkap
+                  </p>
+                  <p
+                    id="detailAlamat"
+                    class="text-sm text-gray-700 leading-relaxed italic"
+                  ></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="p-4 border-t border-gray-100 text-center bg-gray-50 rounded-b-2xl"
+          >
+            <p class="text-[10px] text-gray-400 italic">
+              Pastikan data warga sesuai dengan dokumen kependudukan desa.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    <script type="module" src="./js/users.js"></script>
+  </body>
+</html>

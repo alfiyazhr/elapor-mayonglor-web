@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Laporan - Mayong Lor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/config/theme.js"></script>
+
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      div:where(.swal2-container) {
+        font-family: "Poppins", sans-serif !important;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 antialiased text-slate-800">
+    <nav
+      class="bg-white border-b border-gray-200 fixed w-full z-30 top-0 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
+          <div class="flex items-center">
+            <a href="index.html" class="flex items-center gap-3">
+              <img
+                src="./assets/img/logonav.png"
+                alt="Logo"
+                class="h-10 w-auto object-contain"
+              />
+              <span class="text-xl font-bold text-primary tracking-wide"
+                >E-Lapor Admin</span
+              >
+            </a>
+          </div>
+          <div class="hidden md:flex items-center space-x-8">
+            <a
+              href="index.html"
+              class="text-gray-500 hover:text-primary font-medium px-1 py-2 text-sm flex items-center gap-2"
+            >
+              <i class="fas fa-th-large"></i>Dashboard
+            </a>
+            <a
+              href="users.html"
+              class="text-gray-500 hover:text-primary font-medium px-1 py-2 text-sm flex items-center gap-2"
+            >
+              <i class="fas fa-users"></i>Kelola User
+            </a>
+            <a
+              href="reports.html"
+              class="text-primary font-bold border-b-2 border-primary px-1 py-2 text-sm flex items-center gap-2"
+            >
+              <i class="fas fa-clipboard-list"></i>Laporan
+            </a>
+            <div class="h-6 w-px bg-gray-300 mx-2"></div>
+            <button
+              id="btnLogout"
+              class="flex items-center gap-2 text-red-500 hover:text-red-700 font-medium text-sm"
+            >
+              <i class="fas fa-sign-out-alt"></i> Keluar
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-28 mb-10">
+      <div
+        class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4"
+      >
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Daftar Laporan Masuk</h1>
+          <p class="text-gray-500 text-sm mt-1">
+            Pantau, verifikasi, dan respon aspirasi warga.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3 w-full md:w-auto items-center">
+          <div
+            class="flex items-center gap-2 bg-white p-2 rounded-lg border border-gray-200 shadow-sm"
+          >
+            <select
+              id="printRange"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5"
+            >
+              <option value="1">1 Bulan Terakhir</option>
+              <option value="3">3 Bulan Terakhir</option>
+              <option value="12">1 Tahun Terakhir</option>
+            </select>
+            <button
+              onclick="printReport()"
+              class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-2"
+            >
+              <i class="fas fa-print"></i> Cetak
+            </button>
+          </div>
+
+          <div class="w-44">
+            <select
+              id="sortReport"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            >
+              <option value="date_desc">Waktu: Terbaru</option>
+              <option value="date_asc">Waktu: Terlama</option>
+              <option value="support_desc">Dukungan: Terbanyak</option>
+              <option value="support_asc">Dukungan: Terkecil</option>
+            </select>
+          </div>
+
+          <div class="relative w-64">
+            <div
+              class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+            >
+              <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <input
+              type="text"
+              id="searchReport"
+              class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-primary focus:border-primary"
+              placeholder="Cari judul atau pelapor..."
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="border-b border-gray-200 mb-6">
+        <ul
+          class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500"
+          id="reportTabs"
+        >
+          <li class="me-2">
+            <button
+              class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active group"
+              data-filter="all"
+            >
+              <i class="fas fa-inbox mr-2"></i>Semua
+            </button>
+          </li>
+          <li class="me-2">
+            <button
+              class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group"
+              data-filter="terkirim"
+            >
+              <i class="fas fa-clock mr-2 text-yellow-500"></i>Perlu Verifikasi
+            </button>
+          </li>
+          <li class="me-2">
+            <button
+              class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group"
+              data-filter="selesai"
+            >
+              <i class="fas fa-check-circle mr-2 text-green-500"></i>Selesai
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div
+        class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+              <tr>
+                <th scope="col" class="px-6 py-3">Waktu</th>
+                <th scope="col" class="px-6 py-3">Pelapor</th>
+                <th scope="col" class="px-6 py-3">Judul</th>
+                <th scope="col" class="px-6 py-3 text-center">Dukungan</th>
+                <th scope="col" class="px-6 py-3">Kategori</th>
+                <th scope="col" class="px-6 py-3">Status</th>
+                <th scope="col" class="px-6 py-3 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-laporan">
+              <tr class="bg-white border-b">
+                <td
+                  colspan="7"
+                  class="px-6 py-8 text-center text-gray-400 animate-pulse"
+                >
+                  <i class="fas fa-circle-notch fa-spin mr-2"></i> Mengambil
+                  data...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="empty-state" class="hidden p-10 text-center">
+          <div
+            class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400"
+          >
+            <i class="fas fa-folder-open text-2xl"></i>
+          </div>
+          <p class="text-gray-500 font-medium">Tidak ada laporan ditemukan.</p>
+        </div>
+      </div>
+    </main>
+
+    <div
+      id="modalDetail"
+      tabindex="-1"
+      aria-hidden="true"
+      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-screen max-h-full bg-gray-900 bg-opacity-50 backdrop-blur-sm"
+    >
+      <div class="relative p-4 w-full max-w-5xl max-h-full">
+        <div class="relative bg-white rounded-xl shadow-2xl">
+          <div
+            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t bg-gray-50"
+          >
+            <h3 class="text-lg font-bold text-gray-900">
+              Detail Laporan
+              <span id="detailId" class="text-sm font-normal text-gray-500 ml-2"
+                >#000000</span
+              >
+            </h3>
+            <button
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+              data-modal-hide="modalDetail"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="p-4 md:p-6 overflow-y-auto max-h-[75vh]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-4">
+                <div>
+                  <label
+                    class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+                    >Foto Kejadian</label
+                  >
+                  <img
+                    id="detailFoto"
+                    src=""
+                    alt="Bukti Foto"
+                    class="w-full h-56 object-cover rounded-lg shadow-sm border border-gray-200 mt-1"
+                  />
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-gray-600 uppercase"
+                      >Lokasi Kejadian</span
+                    >
+                    <a
+                      id="linkMaps"
+                      href="#"
+                      target="_blank"
+                      class="text-xs text-blue-600 hover:underline"
+                    >
+                      <i class="fas fa-external-link-alt"></i> App Maps
+                    </a>
+                  </div>
+                  <div
+                    class="w-full h-40 bg-gray-300 rounded overflow-hidden mb-2 relative"
+                  >
+                    <iframe
+                      id="mapsFrame"
+                      width="100%"
+                      height="100%"
+                      frameborder="0"
+                      src=""
+                    ></iframe>
+                  </div>
+                  <p
+                    id="detailLokasi"
+                    class="text-xs text-gray-600 italic font-medium"
+                  >
+                    Memuat...
+                  </p>
+                </div>
+
+                <div id="containerPreviewRespon" class="hidden">
+                  <label
+                    class="text-[10px] font-bold text-green-600 uppercase tracking-widest"
+                    >Foto Bukti Pengerjaan (Admin)</label
+                  >
+                  <img
+                    id="previewFotoRespon"
+                    src=""
+                    class="w-full h-40 object-cover rounded-lg border-2 border-green-200 mt-1"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <div
+                  class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-100"
+                >
+                  <div
+                    id="detailAvatar"
+                    class="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center text-primary font-bold"
+                  >
+                    U
+                  </div>
+                  <div>
+                    <p id="detailNama" class="text-sm font-bold text-gray-900">
+                      Nama Pelapor
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      <i class="fas fa-thumbs-up text-blue-500 mr-1"></i
+                      ><span id="detailDukungan">0</span> Dukungan Warga
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <span
+                    id="detailKategori"
+                    class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase"
+                    >Kategori</span
+                  >
+                  <h4
+                    id="detailJudul"
+                    class="text-lg font-bold text-gray-800 mt-1"
+                  >
+                    Judul Laporan
+                  </h4>
+                  <p
+                    id="detailDeskripsi"
+                    class="text-gray-600 text-sm mt-2 leading-relaxed italic"
+                  >
+                    Deskripsi...
+                  </p>
+                </div>
+
+                <hr class="border-gray-200" />
+
+                <form id="formUpdateStatus" class="space-y-4">
+                  <div>
+                    <label class="block mb-1 text-xs font-bold text-gray-700"
+                      >Update Status</label
+                    >
+                    <select
+                      id="inputStatus"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+                    >
+                      <option value="Terkirim">Terkirim (Menunggu)</option>
+                      <option value="Diproses">
+                        Diproses (Sedang Dikerjakan)
+                      </option>
+                      <option value="Selesai">Selesai (Sudah Beres)</option>
+                      <option value="Ditolak">Ditolak (Tidak Valid)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block mb-1 text-xs font-bold text-gray-700"
+                      >Dokumentasi Bukti (Foto)</label
+                    >
+                    <input
+                      type="file"
+                      id="inputFotoRespon"
+                      accept="image/*"
+                      class="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                    />
+                    <p class="mt-1 text-[10px] text-gray-500">
+                      Unggah foto pengerjaan atau hasil akhir.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label class="block mb-1 text-xs font-bold text-gray-700"
+                      >Tanggapan Admin</label
+                    >
+                    <textarea
+                      id="inputTanggapan"
+                      rows="3"
+                      class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary"
+                      placeholder="Tulis alasan atau progres penanganan..."
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    id="btnSimpan"
+                    class="w-full text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 font-bold rounded-lg text-sm px-5 py-3 transition shadow-md"
+                  >
+                    <i class="fas fa-save mr-2"></i>Simpan Perubahan
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+    <script type="module" src="./js/reports.js"></script>
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
