@@ -8,9 +8,9 @@ Pusat kendali (Centralized Dashboard) untuk ekosistem E-Lapor Mayong Lor. Dashbo
 | :---: | :---: | :---: |
 | <img width="720" height="355" alt="image" src="https://github.com/user-attachments/assets/275fb06d-7143-4ded-934c-a73433b92c4e" width="400" /> | <img width="720" height="360" alt="image" src="https://github.com/user-attachments/assets/3c68284c-e9e7-44a9-a64b-12f632d20bf6" width="400" /> | <img width="720" height="360" alt="image" src="https://github.com/user-attachments/assets/5f288f15-f23a-49cd-b32a-7578cac26999" width="400" /> |
 
-| Detail Laporan | Manajemen Pengguna | Pengaturan Profil |
+| Detail Laporan | Manajemen Pengguna | Cetak Laporan |
 | :---: | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/LINK_FOTO_DETAIL_WEB" width="400" /> | <img src="https://github.com/user-attachments/assets/LINK_FOTO_USERS_WEB" width="400" /> | <img src="https://github.com/user-attachments/assets/LINK_FOTO_PROFIL_WEB" width="400" /> |
+| <img src=<img width="720" height="360" alt="image" src="https://github.com/user-attachments/assets/c3affce6-46f4-4b4c-bccd-1ce06839f776" width="400" /> | <img width="720" height="358" alt="image" src="https://github.com/user-attachments/assets/570e0152-e94e-45df-9ab0-399527ab334c" width="400" /> | <img width="720" height="357" alt="image" src="https://github.com/user-attachments/assets/825c4f4b-b842-4f81-92fd-6af9a925d5e6" width="400" /> |
 
 ## Fitur Utama
 - **Rekapitulasi Pengaduan:** Dashboard pusat yang menyajikan rekapan seluruh laporan masyarakat secara terstruktur.
