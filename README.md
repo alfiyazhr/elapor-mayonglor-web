@@ -10,7 +10,7 @@ Pusat kendali (Centralized Dashboard) untuk ekosistem E-Lapor Mayong Lor. Dashbo
 
 | Detail Laporan | Manajemen Pengguna | Cetak Laporan |
 | :---: | :---: | :---: |
-| <img src=<img width="720" height="360" alt="image" src="https://github.com/user-attachments/assets/c3affce6-46f4-4b4c-bccd-1ce06839f776" width="400" /> | <img width="720" height="358" alt="image" src="https://github.com/user-attachments/assets/570e0152-e94e-45df-9ab0-399527ab334c" width="400" /> | <img width="720" height="357" alt="image" src="https://github.com/user-attachments/assets/825c4f4b-b842-4f81-92fd-6af9a925d5e6" width="400" /> |
+| <img width="720" height="360" alt="image" src="https://github.com/user-attachments/assets/c3affce6-46f4-4b4c-bccd-1ce06839f776" width="400" /> | <img width="720" height="358" alt="image" src="https://github.com/user-attachments/assets/570e0152-e94e-45df-9ab0-399527ab334c" width="400" /> | <img width="720" height="357" alt="image" src="https://github.com/user-attachments/assets/825c4f4b-b842-4f81-92fd-6af9a925d5e6" width="400" /> |
 
 ## Fitur Utama
 - **Rekapitulasi Pengaduan:** Dashboard pusat yang menyajikan rekapan seluruh laporan masyarakat secara terstruktur.
